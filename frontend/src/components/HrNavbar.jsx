@@ -40,8 +40,8 @@ const HrNavbar = () => {
 
         {/* CENTER LOGO */}
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center text-2xl font-bold">
-          HR<sup className="text-xs">®</sup>
-          <span className="text-green-600 ml-1">Panel</span>
+          WORK<sup className="text-xs">®</sup>
+          <span className="text-green-600 ml-1">FINDER</span>
         </div>
 
         {/* RIGHT SIDE */}

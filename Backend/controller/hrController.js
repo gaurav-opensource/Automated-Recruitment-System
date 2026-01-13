@@ -1,61 +1,8 @@
-const Joi = require("joi");
 const bcrypt = require("bcryptjs");
 const User = require("../model/user.model");
 const Job = require('../model/job.model');
+const hrSchema = require("../config/schema");
 
-// Hr Register Schema validation
-const hrSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-  contact: Joi.string().required(),
-  companyName: Joi.string().required(),
-  position: Joi.string().required()
-});
-
-
-// Hr Login Schema validation
-const loginSchema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().required()
-});
-
-
-// Hr Register 
-exports.registerHR = async (req, res) => {
-  const { error } = hrSchema.validate(req.body);
-  if (error) {
-    return res.status(400).json({ message: error.details[0].message });
-  }
-
-  try {
-    const { name, email, password, contact,companyName, position } = req.body;
-
-
-    const existingHR = await User.findOne({ email });
-    if (existingHR) {
-      return res.status(400).json({ message: "Email already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const hr = new User({
-      name,
-      email,
-      password: hashedPassword,
-      contact,
-      companyName,
-      position,
-      role: "hr",
-    });
-
-    await hr.save();
-
-    return res.status(200).json({ message: "HR registered successfully" });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-};
 
 
 
@@ -79,6 +26,7 @@ exports.getHRProfile = async (req, res) => {
   }
 };
 
+
 //Update Hr Profile
 exports.updateHRProfile = async (req, res) => {
   try {
@@ -100,6 +48,7 @@ exports.updateHRProfile = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 //Hr create a Job
 exports.createJob = async(req, res) => {

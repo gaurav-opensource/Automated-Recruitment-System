@@ -34,8 +34,8 @@ const StudentNavbar = () => {
 
         {/* CENTER - LOGO */}
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center text-2xl font-bold">
-          Best<sup className="text-xs">®</sup>
-          <span className="text-blue-600 ml-1">Hiring</span>
+          WORK<sup className="text-xs">®</sup>
+          <span className="text-blue-600 ml-1">FINDER</span>
         </div>
 
         {/* RIGHT - PROFILE + MENU */}

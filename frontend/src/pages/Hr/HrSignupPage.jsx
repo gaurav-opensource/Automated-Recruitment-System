@@ -28,7 +28,7 @@ export default function HRSignupPage() {
     setMessage("");
 
     try {
-      await axios.post(`${BASE_URL}/hr/register`, formData);
+      await axios.post(`${BASE_URL}/auth/hr`, formData);
       setMessage("HR Registered Successfully!");
       setFormData({
         name: "",

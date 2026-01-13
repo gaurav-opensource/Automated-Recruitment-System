@@ -13,8 +13,8 @@ const studentRegisterSchema = Joi.object({
   degree: Joi.string().optional(),
   branch: Joi.string().optional(),
   graduationYear: Joi.number().integer().min(1900).max(2100).optional(), // graduation year between 1900 to 2100
-
   skills: Joi.array().items(Joi.string()).optional(),
+
   // project with thier details
   projects: Joi.array().items(
     Joi.object({
@@ -52,7 +52,7 @@ const studentRegisterSchema = Joi.object({
   }).optional(),
 
   
-  resume: Joi.string().uri().optional(), // Resume URL (Cloudinary PDF link) – store only the uploaded file link
+  resume: Joi.string().uri().optional(), // Resume URL (Cloudinary PDF link)
 
   location: Joi.string().optional(),
 
@@ -60,6 +60,15 @@ const studentRegisterSchema = Joi.object({
   savedJobs: Joi.array().items(Joi.string().hex().length(24)).optional(),
 });
 
+// Hr Signup validation
+const HrSignupSchema = Joi.object({
+ name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+  contact: Joi.string().required(),      
+  companyName: Joi.string().required(),
+  position: Joi.string().required(),
+});
 
 
 // login validation
@@ -68,4 +77,6 @@ const loginSchema = Joi.object({
   password: Joi.string().required()
 });
 
-module.exports = { studentRegisterSchema , loginSchema};
+
+
+module.exports = { studentRegisterSchema , loginSchema,HrSignupSchema };

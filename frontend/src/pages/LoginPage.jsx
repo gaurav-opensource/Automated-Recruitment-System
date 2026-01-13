@@ -17,7 +17,7 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const endpoint = `${BASE_URL}/students/login`;
+      const endpoint = `${BASE_URL}/auth/login`;
       const response = await axios.post(endpoint, { email, password });
 
       const { token, role } = response.data;

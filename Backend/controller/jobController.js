@@ -457,5 +457,4 @@ module.exports = {
   calculateResumeScore,
   stageChange,
   stageChangeInStudent,
-  enableTestSection,
 }

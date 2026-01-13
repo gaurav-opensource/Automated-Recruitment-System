@@ -8,6 +8,7 @@ const { generateTestEmailTemplate } = require("../controller/emailController");
 const generateToken = () =>
   Math.random().toString(36).substring(2) + Date.now().toString(36);
 
+// Send Test Email Route
 router.post("/send-test-email/:jobId", async (req, res) => {
   try {
     const { jobId } = req.params;

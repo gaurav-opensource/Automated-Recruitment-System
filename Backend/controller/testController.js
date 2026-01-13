@@ -7,8 +7,6 @@ require("dotenv").config();
 const axios = require("axios");
 
 
-
-
 // language map code 
 const LANGUAGE_MAP = {
   javascript: 63,
@@ -17,9 +15,9 @@ const LANGUAGE_MAP = {
 };
 
 
-const JUDGE0_URL = "https://judge0-ce.p.rapidapi.com";
-const JUDGE0_KEY = "1b7e563300msh3a6a8fa89c5812bp17fcd1jsn302890a8dc8a";
-const JUDGE0_HOST = "judge0-ce.p.rapidapi.com";
+const JUDGE0_URL = process.env.JUDGE0_URL;
+const JUDGE0_KEY = process.env.JUDGE0_KEY;
+const JUDGE0_HOST = process.env.JUDGE0_HOST;
 
 //After complete test, Hr will be calculte test score
 const evaluateJob = async (req, res) => {

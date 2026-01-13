@@ -92,6 +92,7 @@ const Home = () => {
 
       {/* ABOUT PLATFORM */}
       <motion.section
+        id="about"
         className="px-8 lg:px-20 py-20"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -107,6 +108,7 @@ const Home = () => {
 
       {/* SERVICES */}
       <motion.section
+        id="services"
         className="px-8 lg:px-20 py-20 bg-[#111827]"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -135,6 +137,7 @@ const Home = () => {
 
       {/* STUDENTS SECTION */}
       <motion.section
+        id="students"
         className="px-8 lg:px-20 py-20"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -162,6 +165,7 @@ const Home = () => {
 
       {/* COMPANIES */}
       <motion.section
+        id="companies"
         className="px-8 lg:px-20 py-20 bg-[#111827]"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -190,6 +194,7 @@ const Home = () => {
 
       {/* CALL TO ACTION */}
       <motion.section
+        id="contact"
         className="bg-gradient-to-r from-purple-700 to-purple-500 text-white text-center px-8 lg:px-20 py-20"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

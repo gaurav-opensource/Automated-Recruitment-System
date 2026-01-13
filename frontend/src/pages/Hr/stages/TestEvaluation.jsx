@@ -54,14 +54,14 @@ export default function TestEvaluation({ job }) {
     try {
       const token = localStorage.getItem("token");
 
-      // ✅ Update job stage to interview
+      // Update job stage to interview
       await axios.post(
         `${BASE_URL}/job/${job._id}/stageChange`,
         { stage: "interview" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // ✅ Update selected students' stage to interview
+      // Update selected students' stage to interview
       await axios.post(
         `${BASE_URL}/job/${job._id}/stageChangeInStudent`,
         { studentIds: selectedStudents, stage: "interview" },

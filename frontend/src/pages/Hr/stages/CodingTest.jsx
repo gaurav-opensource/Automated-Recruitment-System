@@ -10,8 +10,8 @@ const CodingTest = ({ job, onStageUpdate }) => {
   const [showCreateQuestion, setShowCreateQuestion] = useState(false);
   const [email, setEmail] = useState("");
   const [emailDescription, setEmailDescription] = useState("");
-   const [startTime, setStartTime] = useState(""); // NEW
-  const [endTime, setEndTime] = useState("");     // NEW
+   const [startTime, setStartTime] = useState(""); 
+  const [endTime, setEndTime] = useState("");     
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
