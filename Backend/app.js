@@ -34,6 +34,8 @@ app.use(logger);
 /* ---------- DATABASE ---------- */
 connectDB();
 
+
+
 /* ---------- ROUTES ---------- */
 app.use("/api/auth", authRoute);
 app.use("/api/students", studentRoute);
@@ -42,6 +44,10 @@ app.use("/api/job", jobRoute);
 app.use("/api/questions", testRoute);
 app.use("/api/progress", progressRoute);
 app.use("/api/email", emailRoute);
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the Recruitment Platform API");
+});
 
 /* ---------- SERVER ---------- */
 const PORT = process.env.PORT || 5000;
