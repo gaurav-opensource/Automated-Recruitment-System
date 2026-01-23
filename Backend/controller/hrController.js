@@ -33,7 +33,7 @@ exports.updateHRProfile = async (req, res) => {
     if (!hr) {
       return res.status(404).json({ message: "HR not found" });
     }
-
+    // Fields that can be updated
     const fields = ["name", "contact", "position"];
     // Update only provided fields
     fields.forEach((field) => {
@@ -43,7 +43,7 @@ exports.updateHRProfile = async (req, res) => {
     });
     // Save updated HR profile
     await hr.save();
-    return res.status(200).json({ message: "Profile updated successfully" });
+    return res.status(200).json({ message: "Profile Updated Successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
