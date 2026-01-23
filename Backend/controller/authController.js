@@ -1,8 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user.model');
-const { HrSignupSchema } = require("../config/schema");
-const { studentRegisterSchema, loginSchema } = require("../config/schema");
+const { studentRegisterSchema, loginSchema, HrSignupSchema } = require("../config/schema");
 
 
 // Login for both Student and HR
