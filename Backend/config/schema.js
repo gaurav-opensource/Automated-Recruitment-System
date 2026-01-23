@@ -9,11 +9,14 @@ const studentRegisterSchema = Joi.object({
 
   profilePhoto: Joi.string().uri().optional(),
   phone: Joi.string().pattern(/^\+?[1-9]\d{9,14}$/).optional(), // Phone number validation (E.164 format)
+
+  // education details
   college: Joi.string().optional(),
   degree: Joi.string().optional(),
   branch: Joi.string().optional(),
   graduationYear: Joi.number().integer().min(1900).max(2100).optional(), // graduation year between 1900 to 2100
   skills: Joi.array().items(Joi.string()).optional(),
+
 
   // project with thier details
   projects: Joi.array().items(
@@ -23,6 +26,7 @@ const studentRegisterSchema = Joi.object({
       githubLink: Joi.string().uri().optional(),
     })
   ).optional(),
+
   
   // experience with thier details
   experience: Joi.array().items(
@@ -53,16 +57,15 @@ const studentRegisterSchema = Joi.object({
 
   
   resume: Joi.string().uri().optional(), // Resume URL (Cloudinary PDF link)
-
   location: Joi.string().optional(),
-
   appliedJobs: Joi.array().items(Joi.string().hex().length(24)).optional(),
   savedJobs: Joi.array().items(Joi.string().hex().length(24)).optional(),
 });
 
+
 // Hr Signup validation
 const HrSignupSchema = Joi.object({
- name: Joi.string().required(),
+  name: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().required(),
   contact: Joi.string().required(),      
@@ -79,4 +82,4 @@ const loginSchema = Joi.object({
 
 
 
-module.exports = { studentRegisterSchema , loginSchema,HrSignupSchema };
+module.exports = { studentRegisterSchema , loginSchema, HrSignupSchema };
