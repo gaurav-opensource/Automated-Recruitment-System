@@ -2,7 +2,7 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-// this nodemailer to send email
+// Create a transporter object using SMTP transport
 const transporter = nodemailer.createTransport({
   service: "gmail", 
   auth: {
