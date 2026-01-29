@@ -1,37 +1,38 @@
-import { useState } from "react";
-import axios from "axios";
-import BASE_URL from "../apiConfig";
+import { createContext, useContext, useEffect, useState } from "react";
 
-export const useAuth = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const AuthContext = createContext(null);
 
-  const login = async (credentials) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const res = await axios.post(`${BASE_URL}/auth/login`, credentials);
-      localStorage.setItem("token", res.data.token);
-      return res.data;
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Load auth from localStorage on refresh
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    if (token && role) {
+      setUser({ token, role });
     }
+    setLoading(false);
+  }, []);
+
+  const login = ({ token, role }) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("role", role);
+    setUser({ token, role });
   };
 
-  const signup = async (data) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const res = await axios.post(`${BASE_URL}/auth/signup`, data);
-      return res.data;
-    } catch (err) {
-      setError(err.response?.data?.message || "Signup failed");
-    } finally {
-      setLoading(false);
-    }
+  const logout = () => {
+    localStorage.clear();
+    setUser(null);
   };
 
-  return { login, signup, loading, error };
+  return (
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
+
+export const useAuth = () => useContext(AuthContext);

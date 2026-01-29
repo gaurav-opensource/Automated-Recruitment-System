@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CreateQuestion from "../HRCreateQuestion"; 
+import CreateQuestion from "../CreateQuestions"; 
 
 import BASE_URL from "../../../apiConfig";
 
@@ -139,7 +139,7 @@ const CodingTest = ({ job, onStageUpdate }) => {
       )}
 
       {/* Send Email Section */}
-      {job.testSection && (
+      {questions.length > 0 && (
         <div className="mt-6">
           <h4 className="text-lg font-semibold mb-2">Send Test Link</h4>
           <input

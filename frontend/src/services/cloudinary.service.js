@@ -1,10 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 
-//Upload File thorugh cloudinary
-const uploadToCloudinary = (file, type = "image") => {
+// Upload file to Cloudinary
+const uploadToCloudinary = async (file, type = "image") => {
   const data = new FormData();
   data.append("file", file);
   data.append("upload_preset", "ml_default");
+  data.append("cloud_name", "dznnyaj0z");
   data.append("folder", "Healthcare");
 
   const url =
@@ -12,9 +13,11 @@ const uploadToCloudinary = (file, type = "image") => {
       ? "https://api.cloudinary.com/v1_1/dznnyaj0z/image/upload"
       : "https://api.cloudinary.com/v1_1/dznnyaj0z/raw/upload";
 
-  return axios.post(url, data).then((res) => res.data.secure_url);
+  const res = await axios.post(url, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return res.data.secure_url;
 };
 
-
 export default uploadToCloudinary;
-

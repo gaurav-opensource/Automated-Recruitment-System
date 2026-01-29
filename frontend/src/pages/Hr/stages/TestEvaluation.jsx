@@ -22,7 +22,7 @@ export default function TestEvaluation({ job }) {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get(`${BASE_URL}/job/students/${job._id}`, {
+      const res = await axios.get(`${BASE_URL}/job/test/${job._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const sorted = res.data.sort((a, b) => b.testScore - a.testScore);
@@ -79,7 +79,7 @@ export default function TestEvaluation({ job }) {
     <div className="max-w-4xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Test Evaluation</h2>
 
-      {!allSubmitted ? (
+      {allSubmitted ? (
         <div className="bg-yellow-100 p-4 rounded">
           <p>Test not completed yet by all students.</p>
         </div>

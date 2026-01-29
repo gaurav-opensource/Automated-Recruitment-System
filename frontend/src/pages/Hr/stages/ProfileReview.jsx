@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import BASE_URL from "../../../apiConfig";
 
@@ -9,6 +10,7 @@ const ResumeScreening = ({ job }) => {
   const [processing, setProcessing] = useState(false);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectCount, setSelectCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!job) return;
@@ -120,20 +122,34 @@ const ResumeScreening = ({ job }) => {
               <ul className="space-y-2 max-h-64 overflow-auto">
                 {applicants.map((student) => (
                   <li
-                    key={student._id}
-                    className="flex items-center space-x-2 p-2 border rounded bg-gray-50"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedStudents.includes(student._id)}
-                      onChange={() => handleToggleStudent(student._id)}
-                    />
-                    <div>
-                      <p className="font-medium">{student.userId?.name}</p>
-                      <p className="text-sm text-gray-600">📧 {student.userId?.email}</p>
-                      <p className="text-sm text-gray-700">Score: {student.resumeScore}</p>
-                    </div>
-                  </li>
+  key={student._id}
+  className="flex items-center justify-between p-3 border rounded-lg bg-white hover:shadow transition"
+>
+  {/* Left: Info */}
+  <div>
+    <p className="font-semibold text-gray-900">
+      {student.userId?.name}
+    </p>
+    <p className="text-sm text-gray-600">
+      📧 {student.userId?.email}
+    </p>
+    <p className="text-sm text-gray-700">
+      Resume Score:{" "}
+      <span className="font-medium text-blue-600">
+        {student.resumeScore ?? "N/A"}
+      </span>
+    </p>
+  </div>
+
+  {/* Right: Actions */}
+  <button
+    onClick={() => navigate(`/student/${student.userId?._id}`)}
+    className="px-3 py-1.5 text-sm border border-blue-600 text-blue-600 rounded hover:bg-blue-50"
+  >
+    View Profile
+  </button>
+</li>
+
                 ))}
               </ul>
             )}

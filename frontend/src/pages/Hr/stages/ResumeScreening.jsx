@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 import BASE_URL from "../../../apiConfig";
 
@@ -7,6 +9,9 @@ const ResumeScreening = ({ job }) => {
   const [applicants, setApplicants] = useState([]);
   const [loadingApplicants, setLoadingApplicants] = useState(false);
   const [processing, setProcessing] = useState(false);
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (!job) return;
@@ -43,29 +48,12 @@ const ResumeScreening = ({ job }) => {
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
-
-    // 2️⃣ Change Job Stage
+     console.log("Stage-1 Execute");
     await axios.post(
       `${BASE_URL}/job/${job._id}/stageChange`,
       { stage: "profile" },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-
-    // 3️⃣ Update Student Stage in Application Tracker
-    await axios.post(
-      `${BASE_URL}/job/${job._id}/stageChangeInStudent`,
-      { stage: "profile" },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    // 4️⃣ NEW → Resume Score Calculation API
-    const scoreRes = await axios.post(
-      `${BASE_URL}/job/${job._id}/resume-score`,
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    console.log("Resume scores:", scoreRes.data);
 
     alert("Resume screening + scoring completed successfully!");
   } catch (err) {
@@ -103,13 +91,25 @@ const ResumeScreening = ({ job }) => {
             ) : (
               <ul className="space-y-2">
                 {applicants.map((student) => (
-                  <li
+                 <li
                     key={student._id}
-                    className="p-2 border rounded bg-gray-50"
+                    className="p-3 border rounded bg-gray-50 flex justify-between items-center"
                   >
-                    <p className="font-medium">{student.userId?.name}</p>
-                    <p className="text-sm text-gray-600">📧 {student.userId?.email}</p>
+                    <div>
+                      <p className="font-medium">{student.userId?.name}</p>
+                      <p className="text-sm text-gray-600">
+                        📧 {student.userId?.email}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => navigate(`/student/${student.userId?._id}`)}
+                      className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                      View Profile
+                    </button>
                   </li>
+
                 ))}
               </ul>
             )}

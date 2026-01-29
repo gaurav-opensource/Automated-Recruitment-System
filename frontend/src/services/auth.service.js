@@ -18,7 +18,7 @@ API.interceptors.request.use((req) => {
 // Register Student
 export const registerStudent = async (payload) => {
   try {
-    const res = await axios.post(`${BASE_URL}/students/register`, payload);
+    const res = await axios.post(`${BASE_URL}/auth/signup`, payload);
     return res.data;
   } catch (err) {
     console.error("Registration error:", err.response?.data || err.message);

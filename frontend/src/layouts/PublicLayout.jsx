@@ -1,8 +1,10 @@
 import { Outlet } from "react-router-dom";
-import HrNavbar from "../components/HrNavbar";
-import StudentNavbar from "../components/StudentNavbar";
-import Footer from "../components/Footer";
+import HrNavbar from "../components/layout/HrNavbar";
+import StudentNavbar from "../components/layout/StudentNavbar";
+import Footer from "../components/layout/Footer";
 
+
+// Public layout component
 const PublicLayout = () => {
   const role = localStorage.getItem("role");
 
