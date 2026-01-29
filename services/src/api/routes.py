@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
-from controllers.resume_controller import (
+from src.controllers.resume_controller import (
     calculate_resume_score,
     extract_text_from_pdf
 )
