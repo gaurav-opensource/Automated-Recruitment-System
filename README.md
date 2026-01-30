@@ -1,136 +1,110 @@
+# 🚀 Automated Recruitment System
 
-# Hiring Project
+### AI-Powered End-to-End Hiring Platform
 
-https://github.com/gaurav-opensource/Hiring-Platefrom/assets/banner-video.png
+🔗 **GitHub Repository:**
+[https://github.com/gaurav-opensource/Automated-Recruitment-System](https://github.com/gaurav-opensource/Automated-Recruitment-System)
 
-## 🎥 Project Demo (Click to Watch)
-
-[![Watch Video](./frontend/src/assets/home_page.png)](https://www.canva.com/design/DAG6tBW2sls/zM5cWMKwrZU0KHZ0juv5vA/watch)
-
-
-
+🎥 **YouTube Project Walkthrough:**
+[https://youtu.be/oFAwrTyHF_4](https://youtu.be/oFAwrTyHF_4)
 
 ---
 
-I developed a full-stack **Hiring Platform** where students can directly connect with companies, apply for jobs, give coding tests, and get evaluated automatically.  
-The system manages the **entire recruitment workflow** — from job posting, resume evaluation, coding assessments, to interview shortlisting.
-
-It integrates an **AI-powered Resume Scoring API** and a built-in **online code editor** for coding assessments.
-
----
-
-## 📌 Table of Contents
-
-- [About the Project](#about-the-project)
-- [Features](#features)
-- [Screenshots](#screenshots)
-- [Technology Stack](#technology-stack)
-- [AI Resume Scoring System](#ai-resume-scoring-system)
-- [Video Demo](#video-demo)
-- [Installation](#installation)
-- [Project Flow](#project-flow)
-- [Future Improvements](#future-improvements)
-- [Contact](#contact)
+<p align="center">
+  <img src="./frontend/src/assets/home_page.png" alt="Automated Recruitment System Banner" width="90%"/>
+</p>
 
 ---
 
-## 📘 About the Project
+## 📌 Problem Statement (Why This Project?)
 
-The **Hiring Project** is a full-stack recruitment system built to automate real-world hiring.
+Modern recruitment suffers from **major inefficiencies**:
 
-It offers:
+* Recruiters manually screen **hundreds of resumes**
+* Skill mismatch despite good resumes
+* No integrated system for **resume + coding test + evaluation**
+* Fragmented tools for ATS, coding platforms, and communication
 
-- Job posting portal for HR  
-- Student registration + resume upload  
-- AI-powered resume screening  
-- Automated coding test evaluation  
-- Step-by-step shortlisting process  
-
-This is an end-to-end solution demonstrating **full-stack + AI + system design**.
+❌ **Manual hiring = time-consuming, biased, and error-prone**
 
 ---
 
-## ✨ Features
+## 💡 Solution (What This Project Solves)
 
-- **Two Roles:** Student & HR
-- **Student Panel:**  
-  - Create profile  
-  - Upload resume  
-  - Apply for jobs  
-  - Give coding tests  
-  - Track application status  
-- **HR Panel:**  
-  - Create & manage job listings  
-  - AI resume screening  
-  - Candidate scoring dashboard  
-  - Coding test evaluation  
-  - Interview shortlisting  
-- **AI Resume Scoring:**  
-  - FastAPI NLP microservice  
-  - Extract, clean & analyze resume text  
-  - Calculate similarity with Job Description  
-- **Coding Test System:**  
-  - Judge0 API integrated  
-  - Real-time code execution  
+The **Automated Recruitment System** is a **full-stack, AI-powered hiring platform** that automates the **entire recruitment lifecycle** in one place:
+
+> From **job posting → resume screening → coding test → shortlisting**
+
+It combines:
+
+* 🤖 **AI Resume Scoring**
+* 💻 **Online Coding Assessments**
+* 📊 **Automated Candidate Evaluation**
+* 🔐 **Secure Role-Based Dashboards**
 
 ---
 
-## 🖼️ Screenshots
+## 🧠 What Makes This Project Special?
 
-### 🧑‍🎓 Student Dashboard
-![Student Dashboard](./frontend/src/assets/student_dashboard.png)
+✅ Real-world **ATS + Coding Platform**
+✅ AI-based **semantic resume analysis**
+✅ Microservice architecture (ML separated)
+✅ Production-style authentication & workflows
+✅ Designed for **scalability & extensibility**
 
-### 👩‍💼 HR Dashboard
-![HR Dashboard](./frontend/src/assets/hr_dashboard.png)
-
-### 💻 Home Page
-![Home Page](./frontend/src/assets/home_page.png)
-
-### 📊 Resume Score Analysis
-![Resume Score](./frontend/src/assets/resume_score.png)
-
-### 📬 Application Status Page
-![Application Status](./frontend/src/assets/application-status.png)
+This is **not just CRUD** — it’s a **system**.
 
 ---
 
-## 🧠 Technology Stack
+## 🧭 High-Level System Architecture
 
-### Frontend
-- React  
-- Tailwind CSS  
-
-### Backend
-- Node.js  
-- Express.js  
-- MongoDB  
-
-### AI Microservice
-- FastAPI  
-- pdfplumber  
-- SentenceTransformer (MiniLM-L3-v2)  
-- scikit-learn  
-
-### Other Tools
-- Judge0 API  
-- JWT Authentication  
-- Nodemailer  
-- Bcrypt  
+```
+Frontend (React)
+     |
+Backend API (Node + Express)
+     |
+MongoDB
+     |
+AI Resume Scoring Service (FastAPI + NLP)
+     |
+Judge0 API (Coding Test Execution)
+```
 
 ---
 
-## 🤖 AI Resume Scoring System
+## 🎯 Core Features
 
-A FastAPI service that evaluates resumes using:
+### 👨‍🎓 Student Portal
 
-### 🔍 Working Steps
-1. Text extraction (PDF → raw text)  
-2. Preprocessing & cleaning  
-3. Keyword matching  
-4. Semantic similarity using MiniLM-L3-v2  
-5. Final score generation  
+* Profile creation
+* Resume upload (PDF)
+* Job application
+* Online coding tests
+* Real-time application status tracking
 
-### 🔥 Example API Output
+### 🧑‍💼 HR / Recruiter Portal
+
+* Job posting & management
+* AI-based resume screening
+* Candidate ranking dashboard
+* Coding test evaluation
+* Interview shortlisting
+
+---
+
+## 🤖 AI Resume Scoring System (Deep Dive)
+
+A dedicated **FastAPI microservice** performs intelligent resume evaluation.
+
+### 🔍 How It Works
+
+1. PDF resume → text extraction
+2. Text cleaning & preprocessing
+3. Keyword matching with job description
+4. **Semantic similarity using MiniLM (Sentence Transformers)**
+5. Weighted final score generation
+
+### 📊 Sample Output
 
 ```json
 {
@@ -139,30 +113,97 @@ A FastAPI service that evaluates resumes using:
   "semantic_score": 92.57,
   "missing_keywords": ["react", "mongodb"]
 }
-````
+```
+
+✔ This reduces bias
+✔ Improves matching accuracy
+✔ Scales better than manual screening
 
 ---
 
-## 🎥 Video Demo
+## 💻 Coding Test System
 
-### ▶ Watch the Full Project Walkthrough
-
-**Click the thumbnail below**
-
-[![Watch Video](https://img.youtube.com/vi/1x4h3nM8Ujs/maxresdefault.jpg)](https://www.canva.com/design/DAG6tBW2sls/zM5cWMKwrZU0KHZ0juv5vA/watch)
+* Integrated **Judge0 API**
+* Real-time code execution
+* Language-agnostic support
+* Automatic evaluation of submissions
+* Used as a **second-round filter** after resume screening
 
 ---
 
-## ⚙ Installation
+## 🛠️ Technology Stack
 
-### Clone the Repository
+### Frontend
+
+* React
+* Tailwind CSS
+
+### Backend
+
+* Node.js
+* Express.js
+* MongoDB
+
+### AI / ML Microservice
+
+* FastAPI
+* pdfplumber
+* SentenceTransformers (MiniLM-L3-v2)
+* scikit-learn
+
+### Dev & Infra
+
+* JWT Authentication
+* Bcrypt
+* Nodemailer
+* Judge0 API
+
+---
+
+## 🖼️ Screenshots
+
+### 🧑‍🎓 Student Dashboard
+
+![Student Dashboard](./frontend/src/assets/student_dashboard.png)
+
+### 👩‍💼 HR Dashboard
+
+![HR Dashboard](./frontend/src/assets/hr_dashboard.png)
+
+### 📊 Resume Score Analysis
+
+![Resume Score](./frontend/src/assets/resume_score.png)
+
+---
+
+## 🧭 End-to-End Project Flow
+
+### Student Flow
+
+* Register → Create Profile → Upload Resume
+* Apply to Job
+* Attempt Coding Test
+* Track Application Status
+
+### HR Flow
+
+* Create Job Listing
+* AI Resume Screening
+* Review Coding Test Results
+* Shortlist for Interview
+
+---
+
+## ⚙️ Installation & Setup
+
+### Clone Repository
 
 ```bash
 git clone https://github.com/gaurav-opensource/Hiring-Platefrom.git
 cd hiring-project
 ```
 
-### Backend Setup
+### Backend
 
 ```bash
 cd backend
@@ -170,7 +211,7 @@ npm install
 npm start
 ```
 
-### Frontend Setup
+### Frontend
 
 ```bash
 cd frontend
@@ -178,7 +219,7 @@ npm install
 npm start
 ```
 
-### Run AI Microservice
+### AI Microservice
 
 ```bash
 cd ml_api
@@ -187,43 +228,50 @@ python app.py
 
 ---
 
-## 🧭 Project Flow
+## 🧗 Challenges Faced (Important for Interviewers)
 
-### 👨‍🎓 Student Flow
+* Designing **AI scoring logic** that balances keywords + semantics
+* Handling **PDF parsing inconsistencies**
+* Microservice communication between Node & FastAPI
+* Securing role-based access (Student vs HR)
+* Integrating third-party Judge0 reliably
 
-* Register → Create Profile → Upload Resume
-* Apply to Jobs
-* Give coding test
-* Track status
-
-### 🧑‍💼 HR Flow
-
-* Register → Create Job
-* AI Resume Screening
-* Coding Test Review
-* Shortlist Candidates
+✅ Solved using modular design & clean APIs
 
 ---
 
-## 🚀 Future Improvements
+## 🚀 Future Enhancements
 
-* Real-time Notifications
 * Video Interview Module
-* Advanced Resume Parsing (BERT)
+* Real-time Notifications (Socket.IO)
+* Advanced NLP (BERT / SBERT)
 * HR Analytics Dashboard
-* Bulk Email/SMS System
+* Bulk Email & SMS Automation
 
 ---
 
-## 📬 Contact
+## 👨‍💻 Author
 
-**Author:** Gaurav Yadav
-**Email:** [gauravyadavgh@example.com](mailto:gauravyadavgh@example.com)
-**LinkedIn:** [https://www.linkedin.com/in/gauravyadav95/](https://www.linkedin.com/in/gauravyadav95/)
-**GitHub:** [https://github.com/gaurav-opensource](https://github.com/gaurav-opensource)
+**Gaurav Yadav**
+📧 Email: [gauravyadavgh@example.com](mailto:gauravyadavgh@example.com)
+🔗 LinkedIn: [https://www.linkedin.com/in/gauravyadav95/](https://www.linkedin.com/in/gauravyadav95/)
+🐙 GitHub: [https://github.com/gaurav-opensource](https://github.com/gaurav-opensource)
 
 ---
 
-```
+## ⭐ Final Note
 
+> This project reflects my ability to build **real-world, scalable, AI-powered systems** using modern full-stack technologies.
 
+If you like this project, ⭐ the repo — it motivates me to build more 🚀
+
+---
+
+If you want next:
+
+* 🔥 **Resume bullet points from this project**
+* 🎤 **Interview explanation (how to explain this in 2 minutes)**
+* 🎥 **Perfect YouTube voice-over script**
+* 📈 **How to present this to recruiters**
+
+Just say it.

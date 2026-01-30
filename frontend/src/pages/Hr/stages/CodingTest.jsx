@@ -139,7 +139,6 @@ const CodingTest = ({ job, onStageUpdate }) => {
       )}
 
       {/* Send Email Section */}
-      {questions.length > 0 && (
         <div className="mt-6">
           <h4 className="text-lg font-semibold mb-2">Send Test Link</h4>
           <input
@@ -178,7 +177,6 @@ const CodingTest = ({ job, onStageUpdate }) => {
             {processing ? "Sending..." : "Send Email"}
           </button>
         </div>
-      )}
 
       {/* Finalize Test Button */}
       <div className="mt-6">
