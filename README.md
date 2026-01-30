@@ -13,7 +13,7 @@
 ---
 
 <p align="center">
-  <img src="./frontend/src/assets/home_page.png" alt="Automated Recruitment System Banner" width="90%"/>
+  <img src="./frontend/src/assets/images/home_page.png" alt="Automated Recruitment System Banner" width="90%"/>
 </p>
 
 ---
