@@ -9,19 +9,10 @@
 
 <p align="center">
   <a href="https://youtu.be/oFAwrTyHF_4">
-    <img src="./frontend/src/assets/home_page.png" width="80%" />
+    <img src="./frontend/src/assets/images/home_page.png" width="80%" />
   </a>
 </p>
 
-
-
----
-
-<p align="center">
-  <img src="./frontend/src/assets/images/home_page.png" alt="Automated Recruitment System Banner" width="90%"/>
-</p>
-
----
 
 ## 📌 Problem Statement (Why This Project?)
 
