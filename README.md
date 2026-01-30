@@ -44,11 +44,16 @@ It combines:
 
 ## 🧠 What Makes This Project Special?
 
-✅ Real-world **ATS + Coding Platform**
-✅ AI-based **semantic resume analysis**
-✅ Microservice architecture (ML separated)
-✅ Production-style authentication & workflows
-✅ Designed for **scalability & extensibility**
+<h3>🌟 Key Highlights</h3>
+
+<ul>
+  <li>✅ Real-world <b>ATS + Coding Platform</b></li>
+  <li>🤖 <b>AI-based semantic resume analysis</b></li>
+  <li>🧩 <b>Microservice architecture</b> (ML service separated)</li>
+  <li>🔐 <b>Production-style authentication & workflows</b></li>
+  <li>📈 Designed for <b>scalability & extensibility</b></li>
+</ul>
+
 
 This is **not just CRUD** — it’s a **system**.
 
