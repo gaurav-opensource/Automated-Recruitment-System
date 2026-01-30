@@ -134,32 +134,38 @@ A dedicated **FastAPI microservice** performs intelligent resume evaluation.
 
 ---
 
-## 🛠️ Technology Stack
+<h2>🛠️ Technology Stack</h2>
 
-### Frontend
+<h3>🎨 Frontend</h3>
+<ul>
+  <li>⚛️ <b>React.js</b> – Component-based UI</li>
+  <li>🎨 <b>Tailwind CSS</b> – Responsive styling</li>
+</ul>
 
-* React
-* Tailwind CSS
+<h3>🧠 Backend</h3>
+<ul>
+  <li>🟢 <b>Node.js</b> – Server runtime</li>
+  <li>🚀 <b>Express.js</b> – REST APIs</li>
+  <li>🍃 <b>MongoDB</b> – NoSQL database</li>
+</ul>
 
-### Backend
+<h3>🤖 AI / ML Microservice</h3>
+<ul>
+  <li>⚡ <b>FastAPI</b> – High-performance Python API</li>
+  <li>📄 <b>pdfplumber</b> – Resume text extraction</li>
+  <li>🧠 <b>SentenceTransformers</b> – Semantic similarity</li>
+  <li>📊 <b>scikit-learn</b> – Score computation</li>
+</ul>
 
-* Node.js
-* Express.js
-* MongoDB
+<h3>🔐 Dev & Infra</h3>
+<ul>
+  <li>🔑 <b>JWT</b> – Authentication</li>
+  <li>🔒 <b>Bcrypt</b> – Password security</li>
+  <li>📧 <b>Nodemailer</b> – Email service</li>
+  <li>💻 <b>Judge0 API</b> – Code execution</li>
+</ul>
 
-### AI / ML Microservice
 
-* FastAPI
-* pdfplumber
-* SentenceTransformers (MiniLM-L3-v2)
-* scikit-learn
-
-### Dev & Infra
-
-* JWT Authentication
-* Bcrypt
-* Nodemailer
-* Judge0 API
 
 ---
 
@@ -167,33 +173,41 @@ A dedicated **FastAPI microservice** performs intelligent resume evaluation.
 
 ### 🧑‍🎓 Student Dashboard
 
-![Student Dashboard](./frontend/src/assets/student_dashboard.png)
+![Student Dashboard](./frontend/src/assets/images/student_dashboard.png)
 
 ### 👩‍💼 HR Dashboard
 
-![HR Dashboard](./frontend/src/assets/hr_dashboard.png)
+![HR Dashboard](./frontend/src/assets/images/hr_dashboard.png)
 
-### 📊 Resume Score Analysis
 
-![Resume Score](./frontend/src/assets/resume_score.png)
 
 ---
 
-## 🧭 End-to-End Project Flow
+<h2>🧭 End-to-End Project Flow</h2>
 
-### Student Flow
+<h3>👨‍🎓 Student Journey</h3>
 
-* Register → Create Profile → Upload Resume
-* Apply to Job
-* Attempt Coding Test
-* Track Application Status
+<p>
+  📝 <b>Register</b>  
+  ➜ 👤 <b>Create Profile</b>  
+  ➜ 📄 <b>Upload Resume</b>  
+  ➜ 📌 <b>Apply for Job</b>  
+  ➜ 💻 <b>Attempt Coding Test</b>  
+  ➜ 📊 <b>Track Application Status</b>
+</p>
 
-### HR Flow
+<hr/>
 
-* Create Job Listing
-* AI Resume Screening
-* Review Coding Test Results
-* Shortlist for Interview
+<h3>🧑‍💼 HR / Recruiter Journey</h3>
+
+<p>
+  🏢 <b>Create Job Listing</b>  
+  ➜ 🤖 <b>AI Resume Screening</b>  
+  ➜ 💻 <b>Review Coding Results</b>  
+  ➜ 📋 <b>Shortlist Candidates</b>  
+  ➜ 🎯 <b>Interview Selection</b>
+</p>
+
 
 ---
 
@@ -270,11 +284,3 @@ If you like this project, ⭐ the repo — it motivates me to build more 🚀
 
 ---
 
-If you want next:
-
-* 🔥 **Resume bullet points from this project**
-* 🎤 **Interview explanation (how to explain this in 2 minutes)**
-* 🎥 **Perfect YouTube voice-over script**
-* 📈 **How to present this to recruiters**
-
-Just say it.
