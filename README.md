@@ -7,7 +7,12 @@
 
 ## 🎥 YouTube Project Walkthrough
 
-[![Watch the video](./frontend/src/assets/home_page.png)](https://youtu.be/oFAwrTyHF_4)
+<p align="center">
+  <a href="https://youtu.be/oFAwrTyHF_4">
+    <img src="./frontend/src/assets/home_page.png" width="80%" />
+  </a>
+</p>
+
 
 
 ---
