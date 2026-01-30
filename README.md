@@ -5,8 +5,10 @@
 🔗 **GitHub Repository:**
 [https://github.com/gaurav-opensource/Automated-Recruitment-System](https://github.com/gaurav-opensource/Automated-Recruitment-System)
 
-🎥 **YouTube Project Walkthrough:**
-[https://youtu.be/oFAwrTyHF_4](https://youtu.be/oFAwrTyHF_4)
+## 🎥 YouTube Project Walkthrough
+
+[![Watch the video](./frontend/src/assets/home_page.png)](https://youtu.be/oFAwrTyHF_4)
+
 
 ---
 
