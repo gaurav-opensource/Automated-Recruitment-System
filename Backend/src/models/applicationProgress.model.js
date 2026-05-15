@@ -12,13 +12,17 @@ const applicationProgressSchema = new mongoose.Schema({
 
   testLink: { type: String },
   testToken: { type: String },
+  testStartTime: Date,
+  testEndTime: Date,
+  testEmailSentAt: Date,
   testCompleted: { type: Boolean, default: false },         
 
   score: { type: Number, default: 0 },   
   correct: { type: Number, default: 0 }, 
   total: { type: Number, default: 0 },  
 
-  testScore: Number,             
+  testScore: Number,
+  contacted: { type: Boolean, default: false },
 
   currentStage: {
     type: String,
@@ -28,5 +32,7 @@ const applicationProgressSchema = new mongoose.Schema({
 
   isShortlisted: { type: Boolean, default: false }
 }, { timestamps: true });
+
+applicationProgressSchema.index({ jobId: 1, userId: 1 }, { unique: true });
 
 module.exports = mongoose.model('ApplicationProgress', applicationProgressSchema);

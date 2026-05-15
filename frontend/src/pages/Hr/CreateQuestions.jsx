@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import API from "../../apiConfig";
 
-export default function CreateQuestion({ jobId }) {
+export default function CreateQuestion({ jobId, onQuestionCreated }) {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [marks, setMarks] = useState(100);
@@ -19,18 +19,36 @@ export default function CreateQuestion({ jobId }) {
 
   const handleSubmit = async () => {
   if (!jobId) return alert("JobId missing!");
-  const payload = { jobId, title, description: desc, marks, testCases };
+  if (!title.trim() || !desc.trim()) return alert("Please add a title and description.");
+  if (testCases.some((tc) => tc.output.trim() === "")) {
+    return alert("Each test case must have an expected output.");
+  }
+
+  const payload = {
+    jobId,
+    title: title.trim(),
+    description: desc.trim(),
+    marks: Number(marks) || 100,
+    testCases,
+  };
 
   try {
+    const token = localStorage.getItem("token");
     // Step 1: Create the question
     const res = await axios.post(
     `${API}/questions/create`,
-      payload
+      payload,
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     alert("Question created: " + res.data._id);
+    setTitle("");
+    setDesc("");
+    setMarks(100);
+    setTestCases([{ input: "", output: "", hidden: false }]);
+    if (onQuestionCreated) onQuestionCreated(res.data);
   } catch (err) {
-    alert("Error: " + err.message);
+    alert("Error: " + (err.response?.data?.error || err.message));
   }
 };
 

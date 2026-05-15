@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import BASE_URL from "../../../apiConfig";
 
-const ResumeScreening = ({ job }) => {
+const ResumeScreening = ({ job, onStageUpdate }) => {
   const [applicants, setApplicants] = useState([]);
   const [loadingApplicants, setLoadingApplicants] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -42,23 +42,21 @@ const ResumeScreening = ({ job }) => {
   try {
     const token = localStorage.getItem("token");
 
-    // 1️⃣ Resume Screening
-    await axios.post(
+    // Resume screening also moves the job to profile when the backend completes.
+    const scoreRes = await axios.post(
       `${BASE_URL}/job/${job._id}/resume-screen`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
-     console.log("Stage-1 Execute");
-    await axios.post(
-      `${BASE_URL}/job/${job._id}/stageChange`,
-      { stage: "profile" },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
 
-    alert("Resume screening + scoring completed successfully!");
+    setApplicants(scoreRes.data.results || []);
+    alert(
+      `Resume screening completed. Scored: ${scoreRes.data.scoredCount || 0}, skipped/failed: ${scoreRes.data.skippedOrFailedCount || 0}.`
+    );
+    if (onStageUpdate) onStageUpdate();
   } catch (err) {
     console.error("Error processing resumes:", err);
-    alert("Failed to process resumes.");
+    alert(err.response?.data?.message || "Failed to process resumes.");
   } finally {
     setProcessing(false);
   }
@@ -85,7 +83,7 @@ const ResumeScreening = ({ job }) => {
           <div className="mt-4">
             <h4 className="text-lg font-semibold mb-2">Applicants:</h4>
             {loadingApplicants ? (
-              <p>⏳ Loading applicants...</p>
+              <p>Loading applicants...</p>
             ) : applicants.length === 0 ? (
               <p>No applicants found.</p>
             ) : (
@@ -98,8 +96,16 @@ const ResumeScreening = ({ job }) => {
                     <div>
                       <p className="font-medium">{student.userId?.name}</p>
                       <p className="text-sm text-gray-600">
-                        📧 {student.userId?.email}
+                        {student.userId?.email || student.email}
                       </p>
+                      <p className="text-sm text-gray-700">
+                        Resume Score: {student.resumeScore ?? student.score ?? "N/A"}
+                      </p>
+                      {student.status && (
+                        <p className="text-xs text-gray-500">
+                          Status: {student.status}
+                        </p>
+                      )}
                     </div>
 
                     <button

@@ -45,8 +45,18 @@ const CodingTest = ({ job, onStageUpdate }) => {
   };
 
   const handleSendEmail = async () => {
-    if (!email || !emailDescription) {
-      alert("Please fill in email and description.");
+    if (questions.length === 0) {
+      alert("Create at least one coding question before sending test links.");
+      return;
+    }
+
+    if (!emailDescription || !startTime || !endTime) {
+      alert("Please fill in description, start time, and end time.");
+      return;
+    }
+
+    if (new Date(endTime) <= new Date(startTime)) {
+      alert("End time must be after start time.");
       return;
     }
 
@@ -56,15 +66,20 @@ const CodingTest = ({ job, onStageUpdate }) => {
       console.log(job._id)
       await axios.post(
         `${BASE_URL}/email/send-test-email/${job._id}`,
-        { email, description: emailDescription,startTime, 
-          endTime  },
+        {
+          email: email.trim() || undefined,
+          description: emailDescription,
+          jobTitle: job.title,
+          startTime,
+          endTime,
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       alert("Email sent successfully!");
     } catch (err) {
       console.error("Error sending email:", err);
-      alert("Failed to send email.");
+      alert(err.response?.data?.message || err.response?.data?.error || "Failed to send email.");
     } finally {
       setProcessing(false);
     }
@@ -82,12 +97,10 @@ const CodingTest = ({ job, onStageUpdate }) => {
       );
 
       alert("Test finalized and stage updated!");
-      if (onStageUpdate) {
-        onStageUpdate();
-      }
+      if (onStageUpdate) onStageUpdate();
     } catch (err) {
       console.error("Error finalizing test:", err);
-      alert("Failed to finalize test.");
+      alert(err.response?.data?.message || "Failed to finalize test.");
     } finally {
       setProcessing(false);
     }
@@ -101,7 +114,7 @@ const CodingTest = ({ job, onStageUpdate }) => {
       <div>
         <h4 className="text-lg font-semibold mb-2">Questions</h4>
         {loadingQuestions ? (
-          <p>⏳ Loading questions...</p>
+          <p>Loading questions...</p>
         ) : questions.length === 0 ? (
           <>
             <p>No questions added yet.</p>
@@ -143,7 +156,7 @@ const CodingTest = ({ job, onStageUpdate }) => {
           <h4 className="text-lg font-semibold mb-2">Send Test Link</h4>
           <input
             type="email"
-            placeholder="Enter your email"
+            placeholder="Student email (leave blank to send all)"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="border p-2 mb-2 w-full"

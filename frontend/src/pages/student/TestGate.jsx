@@ -18,29 +18,35 @@ const TestGate = () => {
       const start = new Date(startTime);
       const end = new Date(endTime);
 
-    //   // ❌ Too early
-    //   if (now < start) {
-    //     setMessage(`⏳ Test will start at ${start.toLocaleString()}`);
-    //     return;
-    //   }
+      if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+        setMessage("Test window is missing or invalid");
+        return;
+      }
 
-      // ❌ Too late
-    //   if (now > end) {
-    //     setMessage("❌ Test has already ended");
-    //     return;
-    //   }
+      // Too early
+      if (now < start) {
+        setMessage(`Test will start at ${start.toLocaleString()}`);
+        return;
+      }
 
-      // ✅ Allowed → redirect to editor
-      navigate(`/students/${jobId}/${userId}`, {
+      // Too late
+      if (now > end) {
+        setMessage("Test has already ended");
+        return;
+      }
+
+      // Allowed: redirect to editor
+      navigate(`/test/${jobId}/${userId}/${token}`, {
         replace: true,
         state: {
           token,
+          startTime,
           endTime
         }
       });
 
     } catch (err) {
-      setMessage("❌ Invalid or expired test link");
+      setMessage("Invalid or expired test link");
     }
   }, [token, navigate]);
 

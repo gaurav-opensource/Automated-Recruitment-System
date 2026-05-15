@@ -10,7 +10,11 @@ const {
   stageChange,
   stageChangeInStudent,
   getJobById,
-  getCurrentStageofStudent
+  getCurrentStageofStudent,
+  getJobStudents,
+  markApplicantContacted,
+  shortlistTopByResume,
+  shortlistTopByTest
 } = require("../controllers/job.controller");
 
 
@@ -36,9 +40,13 @@ router.get("/getjobs", authenticate, getJobsByHRId);
 
 // Fetch Students (ONLY ONE ROUTE)
 router.get("/students/:jobId", authenticate, getStudentsByJobId);
+router.get("/test/:jobId", authenticate, getJobStudents);
+router.post("/applicants/:applicationId/mark-contacted", authenticate, markApplicantContacted);
+router.post("/:jobId/shortlist/resume", authenticate, shortlistTopByResume);
+router.post("/:jobId/shortlist/test", authenticate, shortlistTopByTest);
 
 // Resume Screening
-router.post("/:jobId/resume-screen", calculateResumeScore);
+router.post("/:jobId/resume-screen", authenticate, calculateResumeScore);
 
 router.get("/my-applications-stages", authenticate,getCurrentStageofStudent);
 

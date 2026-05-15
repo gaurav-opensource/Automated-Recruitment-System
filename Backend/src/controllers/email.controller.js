@@ -1,6 +1,7 @@
 // Function to generate coding test email template
 exports.generateTestEmailTemplate = ({
   name,
+  email,
   description,
   jobTitle,
   startTime,
@@ -10,7 +11,9 @@ exports.generateTestEmailTemplate = ({
   return {
     subject: `Coding Test Invitation for ${jobTitle}`,
     html: `
-      <p>Dear <strong>${name} You are Select for ${jobTitle}</strong>,</p>
+      <p>Dear <strong>${name}</strong>,</p>
+      <p>You have been selected for the coding test for <strong>${jobTitle}</strong>.</p>
+      ${email ? `<p><strong>Candidate Email:</strong> ${email}</p>` : ""}
       <p>${description}</p>
       <p><strong>Test Window:</strong> ${new Date(startTime).toLocaleString()} - ${new Date(endTime).toLocaleString()}</p>
       <p>You can access your test using the link below:</p>

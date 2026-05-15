@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const testCaseSchema = new mongoose.Schema({
   input: String,
   output: String,
+  hidden: { type: Boolean, default: false },
 });
 
 const questionSchema = new mongoose.Schema({

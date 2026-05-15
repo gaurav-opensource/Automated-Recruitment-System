@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import BASE_URL from "../../../apiConfig";
 
-const ResumeScreening = ({ job }) => {
+const ProfileReview = ({ job, onStageUpdate }) => {
   const [applicants, setApplicants] = useState([]);
   const [loadingApplicants, setLoadingApplicants] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -23,9 +23,9 @@ const ResumeScreening = ({ job }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        // ✅ Sort applicants by resumeScore in descending order
+        // Sort applicants by resume score in descending order.
         const sortedApplicants = (res.data || []).sort(
-          (a, b) => b.resumeScore - a.resumeScore
+          (a, b) => (b.resumeScore || 0) - (a.resumeScore || 0)
         );
 
         setApplicants(sortedApplicants);
@@ -41,7 +41,12 @@ const ResumeScreening = ({ job }) => {
   }, [job]);
 
   const handleSelectTopStudents = () => {
-    const topStudents = applicants.slice(0, selectCount).map((s) => s._id);
+    const count = Math.min(Number(selectCount), applicants.length);
+    if (!count || count <= 0) {
+      alert("Enter a valid number of students to select.");
+      return;
+    }
+    const topStudents = applicants.slice(0, count).map((s) => s._id);
     setSelectedStudents(topStudents);
   };
 
@@ -63,22 +68,20 @@ const ResumeScreening = ({ job }) => {
     try {
       const token = localStorage.getItem("token");
 
-      // ✅ Update job stage
+      await axios.post(
+        `${BASE_URL}/job/${job._id}/stageChangeInStudent`,
+        { studentIds: selectedStudents, stage: "coding" },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       await axios.post(
         `${BASE_URL}/job/${job._id}/stageChange`,
         { stage: "coding" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // ✅ Update selected students' stages
-      await axios.post(
-        `${BASE_URL}/job/${job._id}/stageChangeInStudent`,
-        { studentIds: selectedStudents, stage: "coding" },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
       alert("Selection confirmed and stages updated!");
       setSelectedStudents([]);
+      if (onStageUpdate) onStageUpdate();
     } catch (err) {
       console.error("Error confirming selection:", err);
       alert("Failed to update stages.");
@@ -87,9 +90,36 @@ const ResumeScreening = ({ job }) => {
     }
   };
 
+  const handleConfirmTopSelection = async () => {
+    const count = Math.min(Number(selectCount), applicants.length);
+    if (!count || count <= 0) {
+      alert("Enter a valid number of students to select.");
+      return;
+    }
+
+    setProcessing(true);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `${BASE_URL}/job/${job._id}/shortlist/resume`,
+        { topN: count },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      alert(`Top ${count} students moved to coding round.`);
+      setSelectedStudents([]);
+      if (onStageUpdate) onStageUpdate();
+    } catch (err) {
+      console.error("Error selecting top students:", err);
+      alert(err.response?.data?.message || "Failed to select top students.");
+    } finally {
+      setProcessing(false);
+    }
+  };
+
   return (
     <div className="p-4">
-      <h3 className="text-xl font-bold mb-4">Resume Screening</h3>
+      <h3 className="text-xl font-bold mb-4">Profile Review</h3>
       {job ? (
         <>
           <p>Total Applicants: <strong>{applicants.length}</strong></p>
@@ -108,14 +138,21 @@ const ResumeScreening = ({ job }) => {
               onClick={handleSelectTopStudents}
               className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
             >
-              Select Top Students
+              Preview Top Students
+            </button>
+            <button
+              onClick={handleConfirmTopSelection}
+              disabled={processing}
+              className="px-4 py-2 ml-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
+            >
+              Move Top To Coding
             </button>
           </div>
 
           <div>
             <h4 className="text-lg font-semibold mb-2">Or select manually:</h4>
             {loadingApplicants ? (
-              <p>⏳ Loading applicants...</p>
+              <p>Loading applicants...</p>
             ) : applicants.length === 0 ? (
               <p>No applicants found.</p>
             ) : (
@@ -125,13 +162,19 @@ const ResumeScreening = ({ job }) => {
   key={student._id}
   className="flex items-center justify-between p-3 border rounded-lg bg-white hover:shadow transition"
 >
+  <input
+    type="checkbox"
+    checked={selectedStudents.includes(student._id)}
+    onChange={() => handleToggleStudent(student._id)}
+    className="mr-3 h-4 w-4"
+  />
   {/* Left: Info */}
   <div>
     <p className="font-semibold text-gray-900">
       {student.userId?.name}
     </p>
     <p className="text-sm text-gray-600">
-      📧 {student.userId?.email}
+      {student.userId?.email}
     </p>
     <p className="text-sm text-gray-700">
       Resume Score:{" "}
@@ -170,4 +213,4 @@ const ResumeScreening = ({ job }) => {
   );
 };
 
-export default ResumeScreening;
+export default ProfileReview;

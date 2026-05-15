@@ -2,12 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
+import { jwtDecode } from "jwt-decode";
 import API from "../../apiConfig";
-
-// Judge0
-const JUDGE0_URL = "https://judge0-ce.p.rapidapi.com";
-const JUDGE0_KEY = "1b7e563300msh3a6a8fa89c5812bp17fcd1jsn302890a8dc8a";
-const JUDGE0_HOST = "judge0-ce.p.rapidapi.com";
 
 const languages = [
   { name: "JavaScript", id: 63, editorLanguage: "javascript", starter: "// JS\n" },
@@ -15,9 +11,15 @@ const languages = [
 ];
 
 const CodeEditor = () => {
-  const { jobId, userId } = useParams();
+  const { jobId, studentId, token } = useParams();
   const { state } = useLocation();
-  const endTime = state?.endTime;
+  let decodedToken = {};
+  try {
+    decodedToken = token ? jwtDecode(token) : {};
+  } catch (err) {
+    decodedToken = {};
+  }
+  const endTime = state?.endTime || decodedToken.endTime;
 
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -26,8 +28,10 @@ const CodeEditor = () => {
   const [results, setResults] = useState([]);
   const [timeLeft, setTimeLeft] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [runLoading, setRunLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  // ⏱ Timer
+  // Timer
   useEffect(() => {
     if (!endTime) return;
     const timer = setInterval(() => {
@@ -35,6 +39,8 @@ const CodeEditor = () => {
       if (diff <= 0) {
         clearInterval(timer);
         handleSubmit(true);
+        setTimeLeft(0);
+        return;
       }
       setTimeLeft(diff);
     }, 1000);
@@ -44,13 +50,18 @@ const CodeEditor = () => {
   // Fetch questions
   useEffect(() => {
     const fetchQuestions = async () => {
-      const res = await axios.get(`${API}/questions/${jobId}`);
-      const formatted = res.data.map((q) => ({
-        ...q,
-        testCases: q.testCases || q.testcases || [],
-      }));
-      setQuestions(formatted);
-      setLoading(false);
+      try {
+        const res = await axios.get(`${API}/questions/${jobId}`);
+        const formatted = res.data.map((q) => ({
+          ...q,
+          testCases: q.testCases || q.testcases || [],
+        }));
+        setQuestions(formatted);
+      } catch (err) {
+        console.error("Error loading questions:", err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchQuestions();
   }, [jobId]);
@@ -58,63 +69,60 @@ const CodeEditor = () => {
   const currentQ = questions[currentIndex];
 
   const runCode = async () => {
-    setResults([]);
-    const code = answers[currentQ._id] || language.starter;
+    if (!currentQ || runLoading) return;
 
-    const output = [];
+    try {
+      setRunLoading(true);
+      setResults([]);
 
-    for (const tc of currentQ.testCases) {
-      const res = await axios.post(
-        `${JUDGE0_URL}/submissions?wait=true`,
-        {
-          source_code: code,
-          language_id: language.id,
-          stdin: tc.input,
-        },
-        {
-          headers: {
-            "x-rapidapi-key": JUDGE0_KEY,
-            "x-rapidapi-host": JUDGE0_HOST,
-          },
-        }
+      const res = await axios.post(`${API}/questions/run`, {
+        userId: studentId,
+        jobId,
+        questionId: currentQ._id,
+        code: answers[currentQ._id] || currentQ.starterCode || language.starter,
+        languageId: language.id,
+        token,
+      });
+
+      setResults(res.data.results || []);
+    } catch (err) {
+      console.error("Error running code:", err);
+      alert(err.response?.data?.error || "Failed to run code.");
+    } finally {
+      setRunLoading(false);
+    }
+  };
+
+  const handleSubmit = async (auto = false) => {
+    if (submitting) return;
+
+    try {
+      setSubmitting(true);
+      const submissions = questions.map((question) =>
+        axios.post(`${API}/questions/submit`, {
+          userId: studentId,
+          jobId,
+          questionId: question._id,
+          code: answers[question._id] || question.starterCode || language.starter,
+          languageId: language.id,
+          token,
+        })
       );
 
-      const actual =
-        res.data.stdout?.trim() ||
-        res.data.stderr ||
-        res.data.compile_output ||
-        "";
+      await Promise.all(submissions);
 
-      output.push({
-        input: tc.input,
-        expected: tc.output,
-        actual,
-        passed: actual === tc.output,
-      });
+      if (!auto) alert("Test submitted!");
+    } catch (err) {
+      console.error("Error submitting test:", err);
+      alert("Failed to submit test.");
+    } finally {
+      setSubmitting(false);
     }
-
-    setResults(output);
   };
-
-const handleSubmit = async (auto = false) => {
-  const payload = {
-    userId,
-    jobId,
-    questionId: currentQ._id,
-    code: answers[currentQ._id] || language.starter,
-    languageId: language.id,
-  };
-
-  await axios.post(`${API}/questions/submit`, payload);
-  // 
-  await axios.post(`${API}/students/`, { userId, jobId });
-
-  if (!auto) alert("Test submitted!");
-};
 
 
   if (loading) return <p className="p-6">Loading...</p>;
-  if (!currentQ) return <p>No questions</p>;
+  if (!currentQ) return <p>No questions available for this test.</p>;
 
   return (
     <div className="flex h-screen">
@@ -135,7 +143,7 @@ const handleSubmit = async (auto = false) => {
       {/* RIGHT */}
       <div className="w-1/2 flex flex-col">
         {/* Top */}
-        <div className="p-3 bg-gray-100 flex justify-between">
+        <div className="p-3 bg-gray-100 flex items-center justify-between gap-3">
           <select
             value={language.name}
             onChange={(e) =>
@@ -146,8 +154,29 @@ const handleSubmit = async (auto = false) => {
           </select>
 
           <span className="text-red-600 font-bold">
-            ⏱ {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
+            {timeLeft == null
+              ? "--:--"
+              : `${Math.floor(timeLeft / 60)}:${String(timeLeft % 60).padStart(2, "0")}`}
           </span>
+        </div>
+
+        <div className="px-3 py-2 bg-white border-b flex flex-wrap gap-2">
+          {questions.map((question, index) => (
+            <button
+              key={question._id}
+              onClick={() => {
+                setCurrentIndex(index);
+                setResults([]);
+              }}
+              className={`px-3 py-1 text-sm border rounded ${
+                currentIndex === index
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white text-gray-700 border-gray-300"
+              }`}
+            >
+              Q{index + 1}
+            </button>
+          ))}
         </div>
 
         {/* Editor */}
@@ -155,7 +184,7 @@ const handleSubmit = async (auto = false) => {
           <Editor
             theme="vs-dark"
             language={language.editorLanguage}
-            value={answers[currentQ._id] || language.starter}
+            value={answers[currentQ._id] || currentQ.starterCode || language.starter}
             onChange={(v) =>
               setAnswers({ ...answers, [currentQ._id]: v })
             }
@@ -169,12 +198,12 @@ const handleSubmit = async (auto = false) => {
             <p className="text-gray-400">Run code to see output</p>
           ) : (
             results.map((r, i) => (
-              <div key={i} className={r.passed ? "text-green-400" : "text-red-400"}>
-                Test {i + 1}: {r.passed ? "Passed" : "Failed"}
+              <div key={i} className={r.status === "PASSED" ? "text-green-400" : "text-red-400"}>
+                Test {i + 1}: {r.status === "PASSED" ? "Passed" : "Failed"}
                 <br />
-                Expected: {r.expected}
+                Expected: {r.expectedOutput}
                 <br />
-                Actual: {r.actual}
+                Actual: {r.actualOutput}
               </div>
             ))
           )}
@@ -182,11 +211,41 @@ const handleSubmit = async (auto = false) => {
 
         {/* Actions */}
         <div className="p-3 flex justify-between bg-gray-100">
-          <button onClick={runCode} className="bg-yellow-500 px-4 py-2 text-white">
-            Run Code
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                setCurrentIndex((idx) => Math.max(0, idx - 1));
+                setResults([]);
+              }}
+              disabled={currentIndex === 0}
+              className="bg-gray-600 px-4 py-2 text-white disabled:bg-gray-400"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => {
+                setCurrentIndex((idx) => Math.min(questions.length - 1, idx + 1));
+                setResults([]);
+              }}
+              disabled={currentIndex === questions.length - 1}
+              className="bg-gray-600 px-4 py-2 text-white disabled:bg-gray-400"
+            >
+              Next
+            </button>
+          </div>
+          <button
+            onClick={runCode}
+            disabled={runLoading}
+            className="bg-yellow-500 px-4 py-2 text-white disabled:bg-gray-400"
+          >
+            {runLoading ? "Running..." : "Run Code"}
           </button>
-          <button onClick={() => handleSubmit(false)} className="bg-green-600 px-4 py-2 text-white">
-            Submit Test
+          <button
+            onClick={() => handleSubmit(false)}
+            disabled={submitting}
+            className="bg-green-600 px-4 py-2 text-white disabled:bg-gray-400"
+          >
+            {submitting ? "Submitting..." : "Submit Test"}
           </button>
         </div>
       </div>

@@ -38,8 +38,8 @@ export default function Interview({ job }) {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        `${BASE_URL}/students/${studentId}/mark-contacted`,
-        { jobId: job._id }, // ✅ sending jobId along with request
+        `${BASE_URL}/job/applicants/${studentId}/mark-contacted`,
+        { jobId: job._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -73,8 +73,10 @@ export default function Interview({ job }) {
             >
               <div>
                 <p className="font-medium text-lg">{student.userId?.name}</p>
-                <p className="text-sm text-gray-600">📧 {student.userId?.email}</p>
-                <p className="text-sm text-gray-600">Score: {student.testScore}</p>
+                <p className="text-sm text-gray-600">{student.userId?.email}</p>
+                <p className="text-sm text-gray-600">
+                  Score: {student.testScore ?? student.score ?? 0}
+                </p>
               </div>
               <div>
                 {student.contacted ? (
