@@ -44,6 +44,24 @@ function AppRoute() {
         <Route path="/" element={<Home />} />
       </Route>
 
+      {/* ================= TEST LINK FLOW ================= */}
+      <Route path="/test/start/:token" element={<TestGate />} />
+      <Route
+        path="/test/:jobId/:studentId/:token"
+        element={<TestCodeEditorPage />}
+      />
+
+      {/* ================= SHARED AUTH ================= */}
+      <Route
+        element={
+          <ProtectedRoute allowedRoles={["student", "hr"]}>
+            <PublicLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="/jobs" element={<PostJob />} />
+      </Route>
+
       {/* ================= STUDENT ================= */}
       <Route
         element={
@@ -59,12 +77,6 @@ function AppRoute() {
         <Route path="/jobs/:id" element={<JobDetails />} />
         <Route path="/student/:id" element={<PublicStudentProfile />} />
 
-        {/* Test flow */}
-        <Route path="/test/start/:token" element={<TestGate />} />
-        <Route
-          path="/test/:jobId/:studentId/:token"
-          element={<TestCodeEditorPage />}
-        />
       </Route>
 
       {/* ================= HR ================= */}
@@ -79,7 +91,6 @@ function AppRoute() {
         <Route path="/hr/profile" element={<HrProfilePage />} />
         <Route path="/hr/create" element={<CreateJobs />} />
         <Route path="/hr/create-question" element={<HRCreateQuestion />} />
-        <Route path="/jobs" element={<PostJob />} />
       </Route>
 
       {/* ================= FALLBACK ================= */}

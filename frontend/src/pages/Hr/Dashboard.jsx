@@ -22,22 +22,28 @@ const HRDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState(null);
 
-  useEffect(() => {
-    const fetchHrJobs = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get(`${BASE_URL}/job/getjobs`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setHrData(res.data.jobs || []);
-      } catch (err) {
-        console.error("Error fetching jobs:", err);
-        alert("Failed to fetch jobs");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchHrJobs = async ({ silent = false } = {}) => {
+    try {
+      if (!silent) setLoading(true);
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`${BASE_URL}/job/getjobs`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const jobs = res.data.jobs || [];
+      setHrData(jobs);
+      setSelectedJob((current) => {
+        if (!current) return null;
+        return jobs.find((job) => job._id === current._id) || current;
+      });
+    } catch (err) {
+      console.error("Error fetching jobs:", err);
+      alert("Failed to fetch jobs");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchHrJobs();
   }, []);
 
@@ -50,7 +56,7 @@ const HRDashboard = () => {
     if (!stageObj) return <p>Unknown Stage</p>;
 
     const StageComponent = stageObj.component;
-    return <StageComponent job={selectedJob} />;
+    return <StageComponent job={selectedJob} onStageUpdate={() => fetchHrJobs({ silent: true })} />;
   };
 
   const renderStageTracker = () => {
@@ -154,7 +160,7 @@ const HRDashboard = () => {
           </>
         ) : (
           <div className="text-center text-gray-600 text-lg mt-20">
-            ← Select a job from the sidebar to view details.
+            Select a job from the sidebar to view details.
           </div>
         )}
       </div>

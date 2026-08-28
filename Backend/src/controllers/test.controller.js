@@ -7,6 +7,7 @@ require("dotenv").config();
 const axios = require("axios");
 
 const { generateTestEmailTemplate } = require("../controllers/email.controller.js");
+const { runCode } = require("../services/judge.service.js");
 
 // Language ID map (Judge0 compatible)
 const LANGUAGE_MAP = {
@@ -170,12 +171,12 @@ const sendTestEmail = async (req, res) => {
 
     const applicants = await ApplicationProgress.find({
       jobId,
-      currentStage: "test",
+      currentStage: "coding",
     }).populate("userId", "name email");
 
     if (!applicants.length) {
       return res.status(404).json({
-        message: "No applicants found in test stage",
+        message: "No applicants found in coding stage",
       });
     }
 
@@ -221,7 +222,7 @@ const submitTest = async (req, res, next) => {
       return res.status(404).json({ message: "Question not found" });
     }
 
-    const languageId = languageMap[language];
+    const languageId = LANGUAGE_MAP[language];
     if (!languageId) {
       return res.status(400).json({ message: "Unsupported language" });
     }
@@ -232,22 +233,11 @@ const submitTest = async (req, res, next) => {
       question.testCases
     );
 
-    const attempt = await TestAttempt.create({
-      student: req.user.id,
-      question: questionId,
-      code,
-      language,
-      testCaseResults: results,
-      passedTestCases: passedCount,
-      totalTestCases: total,
-    });
-
     res.status(200).json({
       success: true,
       passed: passedCount,
       total,
       testCaseResults: results,
-      attemptId: attempt._id,
     });
   } catch (error) {
     next(error); // goes to error.middleware.js

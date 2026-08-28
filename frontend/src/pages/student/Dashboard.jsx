@@ -3,7 +3,7 @@ import axios from "axios";
 import Loader from "../../components/common/Loader";
 import API from "../../apiConfig";
 
-const stages = ["resume", "test", "interview", "final", "rejected"];
+const stages = ["resume", "coding", "interview", "final", "rejected"];
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -60,7 +60,7 @@ const Dashboard = () => {
       <div className="max-w-5xl mx-auto space-y-10">
         {applications.map((app) => (
           <div
-            key={app._id}
+            key={app.applicationId}
             className="bg-white shadow-lg rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition"
           >
             {/* Job Title */}
@@ -82,6 +82,9 @@ const Dashboard = () => {
                 if (stages.indexOf(app.currentStage) > index) status = "completed";
                 else if (stages.indexOf(app.currentStage) === index)
                   status = "current";
+                if (app.currentStage === "rejected" && stage === "rejected") {
+                  status = "rejected";
+                }
 
                 const colors = {
                   completed: "bg-green-500 text-white",

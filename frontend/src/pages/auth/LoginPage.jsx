@@ -3,9 +3,11 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../apiConfig";
 import Loader from "../../components/common/Loader";
+import { useAuth } from "../../context/AuthContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -23,10 +25,7 @@ const handleLogin = async (e) => {
     });
 
     const { token, role } = response.data;
-    console.log(role,token)
-
-    localStorage.setItem("token", token);
-    localStorage.setItem("role", role);
+    login({ token, role });
 
     // ✅ ROLE-BASED REDIRECT
     if (role === "student") {

@@ -2,16 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiMoreVertical, FiMenu } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
 
 const HrNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuRef = useRef(null);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     navigate("/");
   };
 

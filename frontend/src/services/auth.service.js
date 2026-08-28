@@ -28,15 +28,15 @@ export const registerStudent = async (payload) => {
 
 
 export const getMyApplications = async (userId) => {
-  const res = await axios.get(`${BASE_URL}/job/my-applications/${userId}`);
+  const res = await axios.get(`${BASE_URL}/job/my-applications-stages`);
   return res.data;
 };
 
 // Login
-export const loginUser = (data) => API.post('/students/login', data);
+export const loginUser = (data) => API.post('/auth/login', data);
 
 // Get Student Profile
-export const getStudentProfile = () => API.get('/students/profile');
+export const getStudentProfile = () => API.get('/students/getProfile');
 
 // Update Student Profile
-export const updateStudentProfile = (data) => API.put('/students/update-profile', data);
+export const updateStudentProfile = (data) => API.put('/students/updateProfile', data);

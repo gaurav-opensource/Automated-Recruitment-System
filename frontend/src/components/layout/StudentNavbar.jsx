@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiMoreVertical } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
 
 const StudentNavbar = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     navigate("/");
   };
 

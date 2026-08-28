@@ -51,7 +51,7 @@ const applyToJob = async (req, res) => {
 //student get all applied job
 const getAppliedJobs = async (req, res) => {
   try {
-    const {userId} = req.user.userId; 
+    const userId = req.user.userId; 
    
     const applications = await ApplicationProgress.find({ userId })
       .populate("jobId", "title company location description");

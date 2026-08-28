@@ -276,11 +276,4 @@ python app.py
 
 ---
 
-## ⭐ Final Note
-
-> This project reflects my ability to build **real-world, scalable, AI-powered systems** using modern full-stack technologies.
-
-If you like this project, ⭐ the repo — it motivates me to build more 🚀
-
----
 
