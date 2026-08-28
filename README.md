@@ -3,7 +3,7 @@
 ### AI-Powered End-to-End Hiring Platform
 
 🔗 **GitHub Repository:**
-[https://github.com/gaurav-opensource/Automated-Recruitment-System](https://github.com/gaurav-opensource/Automated-Recruitment-System)
+[https://github.com/gauravdev95/Automated-Recruitment-System](https://github.com/gauravdev95/Automated-Recruitment-System)
 
 ## 🎥 YouTube Project Walkthrough
 
@@ -216,7 +216,7 @@ A dedicated **FastAPI microservice** performs intelligent resume evaluation.
 ### Clone Repository
 
 ```bash
-git clone https://github.com/gaurav-opensource/Hiring-Platefrom.git
+git clone https://github.com/gauravdev95/Hiring-Platefrom.git
 cd hiring-project
 ```
 
@@ -272,7 +272,7 @@ python app.py
 **Gaurav Yadav**
 📧 Email: [gauravyadavgh@example.com](mailto:gauravyadavgh@example.com)
 🔗 LinkedIn: [https://www.linkedin.com/in/gauravyadav95/](https://www.linkedin.com/in/gauravyadav95/)
-🐙 GitHub: [https://github.com/gaurav-opensource](https://github.com/gaurav-opensource)
+🐙 GitHub: [https://github.com/gauravdev95](https://github.com/gauravdev95)
 
 ---
 
